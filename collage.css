@@ -1,0 +1,25 @@
+.collage-holder{
+	float:left;
+}
+
+.collage-holder >.collage-container{
+	margin:5px;
+}
+
+.collage-holder >.collage-container >.collage-mini-item{
+	background-size:cover;
+	background-position:center;
+	background-repeat:no-repeat;
+	border:solid 1px black;
+	width:100%;
+	margin:6px 0px;
+	position:relative;
+}
+
+.collage-holder >.collage-box{
+	background-size:cover;
+	background-position:center;
+	background-repeat:no-repeat;
+	border:solid 1px black;
+	position:relative;
+}
