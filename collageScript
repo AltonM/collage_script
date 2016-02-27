@@ -1,0 +1,82 @@
+collage = function(){
+	//Wait till the window loads
+	var essentials = {'width':0,'images':[],'layouts':[],'max-size':4};
+	/**
+		Accepted layouts by percentages
+		level are layout[
+			//how many images
+			[1] = [
+				//layout type
+				[1] = [
+					//layout percentages
+					[100]
+					//inner arrays determine if images should be layered
+				] 
+			]
+		]
+	**/
+	essentials['layouts'] = [
+		//1 image
+		[[100]]
+		//2 images
+		,[[50,50],[25,75],[33.33,66.66]]
+		//3 images
+		,[[[50,50],50],[[25,25],75],[[33.33,33.33],66.66]]
+		//4 images
+		,[[25,25,25,25],[33.33,[33.33,33.33],33.33],[33.33,[66.66,66.66,66.66]]]
+	]
+	
+	
+	window.onload = function(){
+		var parentElement = document.getElementById('collage');
+		essentials['width'] = parentElement.offsetWidth;
+		/**
+			Check if there are already defined images if not then get images then hide the images, find all images with the class collage-image
+		**/
+		if(essentials['images'].length < 1){
+			img = document.getElementsByClassName('collage-images');
+			for(i = 0; i < img.length; i++){
+				
+				if(img[i].tagName = 'IMG'){
+					essentials['images'][essentials['images'].length] = img[i].getAttribute('src');
+					img[i].style.display = 'none';
+				}
+				
+			}
+		}
+		
+		
+		/**
+			Once we get all the images the we decide what to do with them.	
+		**/
+		count = essentials['images'].length;
+		current_amount = 0;
+		while(current_amount < 10){
+			min = (essentials['images'].length-current_amount < 2)?1:2;
+			amount = Math.floor((Math.random()*essentials['max-size'])+min);
+			amount = (amount > essentials['max-size'])?essentials['max-size']:amount;
+			size_array = essentials['layouts'][amount-1];
+			placement = Math.floor((Math.random()*size_array.length));
+			size_array = size_array[placement];
+			div_height = essentials['width']*.4;
+			console.log(amount);
+			for(p=0;p<size_array.length;p++){
+				if(size_array[p].constructor == Array){
+					d = '';
+					for(i=0;i<size_array[p].length;i++){
+						d+='<div style="background-image:url(\''+essentials['images'][current_amount]+'\');background-size:cover;background-position:center;background-repeat:no-repeat;border:solid 1px black;width:100%;height:'+(((div_height-10)/size_array[p].length)-5)+'px;margin:6px 0px;"></div>';
+						current_amount++;
+					}
+					parentElement.innerHTML += '<div style="float:left;width:'+size_array[p][0]+'%;"><div style="margin:5px;height:'+(div_height-10)+'px;">'+d+'</div></div>';
+				}else{
+					parentElement.innerHTML += '<div style="float:left;width:'+size_array[p]+'%;"><div style="background-image:url(\''+essentials['images'][current_amount]+'\');height:'+(div_height-10)+'px;margin:5px;background-size:cover;background-position:center;background-repeat:no-repeat;border:solid 1px black;"></div></div>';
+					current_amount++;
+				}
+			}
+			parentElement.innerHTML += '<div class="clear"></div>';
+		}
+		
+		parentElement.innerHTML += '<div class="clear"></div>';
+		
+	}
+}
